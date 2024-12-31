@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Haqslam Mosque - Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+      body, h1, h2, h3, h4, h5, h6 {
+        font-family: "Raleway", sans-serif;
+      }
+      .w3-container {
+        padding: 128px 16px;
+      }
+      .feature-box {
+        margin-top: 64px;
+      }
+      #map {
+        height: 400px;
+        width: 100%;
+        margin-top: 16px;
+      }
+
+      #qibla-finder {
+        text-align: center;
+        margin-top: 40px;
+      }
+
+      #prayer-times {
+        padding: 64px 16px;
+        background-color: #f8f9fa;
+      }
+
+      #prayer-times h3 {
+        font-size: 2rem;
+        color: green;
+        margin-bottom: 16px;
+      }
+
+      #prayer-times ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+        list-style-type: none;
+        padding: 0;
+      }
+
+      #prayer-times ul li {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 150px;
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      #prayer-times ul li:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      #prayer-times ul li span {
+        font-size: 1.5rem;
+        color:green;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      #prayer-times ul li p {
+        font-size: 1rem;
+        color: #333;
+        margin: 0;
+      }
+
+      #prayer-times .w3-button {
+        margin-top: 32px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 8px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+      }
+
+      #prayer-times .w3-button:hover {
+        background-color: #0056b3;
+      }
+      .activities-section {
+        padding: 64px 16px;
+        background-color: #f8f9fa;
+      }
+
+      .activities-section h3 {
+        font-size: 2rem;
+        color: green;
+
+   }
+
+      .activities-section ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .activities-section ul li {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 250px;
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .activities-section ul li:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .activities-section ul li span {
+        font-size: 1.5rem;
+        color:green;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .activities-section ul li p {
+        font-size: 1rem;
+        color: #333;
+        margin: 0;
+      }
+      
+      #event {
+        padding: 64px 16px;
+        background-color: #f8f9fa;
+      }
+
+      #event h3 {
+        font-size: 2rem;
+        color: green;
+        margin-bottom: 16px;
+      }
+
+      #event ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+        list-style-type: none;
+        padding: 0;
+      }
+
+      #event ul li {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 150px;
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      #event ul li:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      #event ul li span {
+        font-size: 1.5rem;
+        color:green;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      #event ul li p {
+        font-size: 1rem;
+        color: #333;
+        margin: 0;
+      }
+
+      #event .w3-button {
+        margin-top: 32px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 8px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+      }
+
+      #event.w3-button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // Check if user is logged in
+      const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    
+      if (!loggedInUser) {
+        alert("Access denied. Please log in first.");
+        window.location.href = "signin.html"; // Redirect to sign-in page
+      }
+    </script>
+    
+    <!-- Navbar -->
+    <div class="w3-top">
+      <div class="w3-bar w3-white w3-card">
+        <a href="index.html" class="w3-bar-item w3-button w3-wide">
+          <img src="image.png" alt="Haqslam Logo" style="width:40px;height:40px;">
+        </a>
+        <div class="w3-right">
+          <a href="#prayer-times" class="w3-bar-item w3-button">Prayer Times</a>
+          <a href="#activities" class="w3-bar-item w3-button">Our Activities</a>
+          <a href="#book" class="w3-bar-item w3-button">Book</a>
+          <a href="#events" class="w3-bar-item w3-button">Events</a>
+          <a href="#qibla-finder" class="w3-bar-item w3-button">Qibla Finder</a>
+          <a href="#donate" class="w3-bar-item w3-button">Donate</a>
+        </div>
+      </div>
+    </div>
+
+        <!-- Live Prayer Times Section -->
+        <div class="w3-container" id="prayer-times">
+          <h3 class="w3-center">Live Prayer Times</h3>
+          <p class="w3-center w3-large">Join us for daily prayers</p>
+          <ul>
+            <li>
+              <span>Fajr</span>
+              <p>5:30 AM</p>
+            </li>
+            <li>
+              <span>Dhuhr</span>
+              <p>12:45 PM</p>
+            </li>
+            <li>
+              <span>Asr</span>
+              <p>3:45 PM</p>
+            </li>
+            <li>
+              <span>Maghrib</span>
+              <p>Sunset</p>
+            </li>
+            <li>
+              <span>Isha</span>
+              <p>7:30 PM</p>
+            </li>
+          </ul>
+          <div class="w3-center">
+            <a href="prayer-countdown.html" class="w3-button w3-large">Solat Countdown</a>
+          </div>
+        </div>
+       <!-- Our Activities Section -->
+    <div class="w3-container activities-section" id="activities">
+      <h3 class="w3-center">Our Activities</h3>
+      <p class="w3-center w3-large">Join us for regular activities at Haqslam Mosque</p>
+      <ul>
+        <li>
+          <span>Asalatu</span>
+          <p>Every Sunday</p>
+          <p>9:00 AM - 1:00 PM</p>
+        </li>
+        <li>
+          <span>Special Prayer</span>
+          <p>Every 1st Thursday of the Month</p>
+          <p>8:00 PM - 9:00 PM</p>
+        </li>
+        <li>
+          <span>Wasifat-Kubural</span>
+          <p>Every Friday</p>
+          <p>4:30 PM - 7:00 PM</p>
+        </li>
+        <li>
+          <span>Special Prayer & Quran Day</span>
+          <p>Every 2nd Sunday of the Month</p>
+          <p>8:45 AM - 2:00 PM</p>
+        </li>
+        <li>
+          <span>Wasilat</span>
+          <p>Every Day</p>
+          <p>8:00 AM - 10:30 AM</p>
+        </li>
+        <li>
+          <span>Azikaru</span>
+          <p>Every Thursday</p>
+          <p>7:00 AM - 8:00 PM</p>
+        </li>
+        <li>
+          <span>Arabic Studies</span>
+          <p>Monday - Thursday</p>
+          <p>4:30 PM - 7:00 PM</p>
+          <p>Saturday</p>
+          <p>2:00 AM - 2:00 PM</p>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Prayer Times Section -->
+      <!-- Book Section -->
+<div class="w3-container" id="book">
+    <h3 class="w3-center">Interactive Book</h3>
+    <p class="w3-center w3-large">Explore the Holy Book</p>
+    <div class="w3-row-padding w3-center feature-box">
+      <div class="w3-third">
+        <i class="fa fa-book w3-jumbo"></i>
+        <p>Listen to recitations</p>
+      </div>
+      <div class="w3-third">
+        <i class="fa fa-language w3-jumbo"></i>
+        <p>Read translations</p>
+      </div>
+      <div class="w3-third">
+        <i class="fa fa-comment w3-jumbo"></i>
+        <p>View tafsir (interpretations)</p>
+      </div>
+    </div>
+    <div class="w3-center">
+      <a href="interactive-book.html" class="w3-button w3-black w3-large">Enter Book</a>
+    </div>
+    <div class="w3-center">
+      <p></p>
+      <a href="Quran.html" class="w3-button w3-black w3-large">Read Quran</a>
+    </div>
+  </div>
+      <!-- Islamic Events Section -->
+      <div class="w3-container w3-light-grey" id="event">
+        <h3 class="w3-center">Islamic Events</h3>
+        <p class="w3-center w3-large">Upcoming Events and Activities</p>
+        <ul class="w3-ul w3-border w3-white w3-large">
+          <li>Ramadan Begins: March 25, 2024</li>
+          <li>Eid al-Fitr: April 10, 2024</li>
+          <li>Eid al-Adha: June 20, 2024</li>
+        </ul>
+      </div>
+  
+      <!-- Donation Section -->
+      <div class="w3-container" id="donate">
+        <h3 class="w3-center">Support Your Mosque</h3>
+        <p class="w3-center w3-large">Every contribution helps</p>
+        <div class="w3-center">
+         <a href="donate.html"><button class="w3-button w3-black">Donate Now</button></a> 
+        </div>
+       <!-- Qibla Finder Section -->
+  <div class="w3-container w3-light-grey" id="qibla-finder">
+    <h3 class="w3-center">Qibla Finder</h3>
+    <p class="w3-center w3-large">Find the direction of the Qibla</p>
+    <button class="w3-button w3-black" onclick="findQibla()">Locate Qibla</button>
+    <p id="qibla-direction" class="w3-center w3-large"></p>
+    <div id="map"></div>
+  </div>
+   <!-- Prayer Reminder Section -->
+   <div class="w3-container w3-light-grey" id="prayer-reminder">
+    <h3 class="w3-center">Set Prayer Time Reminders</h3>
+    <p class="w3-center w3-large">Get reminders for the daily prayers</p>
+    <div class="w3-center">
+      <label for="location">Enter your location (city):</label>
+      <input type="text" id="location" class="w3-input w3-large" placeholder="e.g., New York">
+      <button class="w3-button w3-black w3-large" onclick="setPrayerReminders()">Set Reminders</button>
+    </div>
+    <p id="reminder-status" class="w3-center" style="display: none;">Prayer reminders are active!</p>
+  </div>
+  <script>
+    // Check if user is logged in
+    let compassEnabled = false;
+    let compassHeading = 0;
+    let qiblaDirection = 0;
+
+    // Check if the device supports orientation events (compass)
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', function(event) {
+        if (event.alpha !== null) {
+          compassHeading = event.alpha;
+          if (compassEnabled) {
+            document.getElementById("qibla-direction").innerText =
+              "Qibla Direction: " + (qiblaDirection - compassHeading).toFixed(2) + "°";
+          }
+        }
+      });
+    } else {
+      alert("Compass feature is not supported on your device. Please try again with a supported device.");
+    }
+
+    // Set Prayer Reminders
+    function setPrayerReminders() {
+      if (!("Notification" in window)) {
+        alert("This browser does not support notifications.");
+      } else if (Notification.permission === "granted") {
+        triggerReminder();
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(function(permission) {
+          if (permission === "granted") {
+            triggerReminder();
+          } else {
+            alert("Notifications permission was denied.");
+          }
+        });
+      } else {
+        alert("Push notifications are blocked. Please enable them in browser settings.");
+      }
+    }
+
+    function triggerReminder() {
+      var prayerTimes = ["5:30 AM", "12:45 PM", "3:45 PM", "Sunset", "7:30 PM"];
+      prayerTimes.forEach(function(time, index) {
+        setTimeout(function() {
+          var notification = new Notification("Prayer Time", {
+            body: "It's time for " + (index + 1) + " prayer: " + time,
+            icon: "mmm.png"
+          });
+        }, index * 5000);
+      });
+      document.getElementById("reminder-status").style.display = "block";
+    }
+
+    // Initialize Map
+    let map;
+    function initMap(lat, lon) {
+      map = L.map('map').setView([lat, lon], 12);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+      L.marker([lat, lon]).addTo(map).bindPopup("You are here").openPopup();
+    }
+
+    // Find Qibla Direction
+    function findQibla() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const userLat = position.coords.latitude;
+          const userLon = position.coords.longitude;
+          const kaabaLat = 21.4225;
+          const kaabaLon = 39.8262;
+          qiblaDirection = calculateBearing(userLat, userLon, kaabaLat, kaabaLon);
+          document.getElementById("qibla-direction").innerText =
+            "Qibla Direction: " + qiblaDirection.toFixed(2) + "°";
+          compassEnabled = true;
+          initMap(userLat, userLon);
+          const qiblaPoint = destinationPoint(userLat, userLon, qiblaDirection, 500);
+          L.polyline([[userLat, userLon], [qiblaPoint.lat, qiblaPoint.lon]], { color: 'red' }).addTo(map);
+        });
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
+    }
+
+    function calculateBearing(lat1, lon1, lat2, lon2) {
+      const rad = Math.PI / 180;
+      const dLon = (lon2 - lon1) * rad;
+      const y = Math.sin(dLon) * Math.cos(lat2 * rad);
+      const x = Math.cos(lat1 * rad) * Math.sin(lat2 * rad) - Math.sin(lat1 * rad) * Math.cos(lat2 * rad) * Math.cos(dLon);
+      let brng = Math.atan2(y, x);
+      brng = (brng * 180) / Math.PI;
+      return (brng + 360) % 360; // Normalize to 0-360 degrees
+    }
+
+    function destinationPoint(lat, lon, brng, dist) {
+      const rad = Math.PI / 180;
+      const earthRadius = 6371; // Earth radius in km
+      const angularDistance = dist / earthRadius;
+      const bearingRad = brng * rad;
+      const latRad = lat * rad;
+      const lonRad = lon * rad;
+      const destLat = Math.asin(Math.sin(latRad) * Math.cos(angularDistance) +
+                               Math.cos(latRad) * Math.sin(angularDistance) * Math.cos(bearingRad));
+      const destLon = lonRad + Math.atan2(Math.sin(bearingRad) * Math.sin(angularDistance) * Math.cos(latRad),
+                                          Math.cos(angularDistance) - Math.sin(latRad) * Math.sin(destLat));
+      return { lat: destLat / rad, lon: destLon / rad };
+    }
+  </script>
+
+
+    <!-- Footer -->
+    <footer class="w3-center w3-black w3-padding-64">
+      <p>Powered by Haqslam Mosque</p>
+    </footer>
+  </body>
+</html>

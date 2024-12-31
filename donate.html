@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate - Muslim Charity Nigeria</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        header {
+            background-color:black;
+            color: white;
+            padding: 50px 0;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 3em;
+        }
+
+        .donation-form {
+            margin: 20px;
+        }
+
+        .donation-form input[type="number"] {
+            padding: 10px;
+            font-size: 1em;
+            width: 200px;
+            margin: 10px;
+        }
+
+        .donation-form button {
+            padding: 15px 30px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        .donation-form button:hover {
+            background-color: #2ecc71;
+        }
+
+        .payment-section {
+            display: none;
+            background-color: #ecf0f1;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .pay-now-button {
+            padding: 15px 30px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        .pay-now-button:hover {
+            background-color: #3498db;
+        }
+
+        footer button {
+            padding: 10px 20px;
+            background-color:green;
+            color: white;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        footer button:hover {
+            background-color:greenyellow;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Support Our Community</h1>
+        <p>Your donation helps us support communities and Islamic initiatives in Nigeria.</p>
+    </header>
+
+    <section class="donation-form">
+        <h2>Make a Donation</h2>
+        <p>Enter the amount you wish to donate</p>
+        <input type="number" id="donation-amount" placeholder="Enter amount" min="1" required>
+        <button onclick="makeDonation()">Donate</button>
+    </section>
+
+    <!-- Flutterwave Payment Link Section -->
+    <section id="payment-section" class="payment-section">
+        <h2>Proceed to Payment</h2>
+        <p>Thank you for your generosity! Click the button below to complete your donation via Flutterwave.</p>
+        <a id="payment-link" href="#" target="_blank">
+            <button class="pay-now-button">Donate Now via Flutterwave</button>
+        </a>
+    </section>
+
+    <!-- Back to Home Button -->
+    <footer>
+        <button onclick="window.location.href='index.html'">Back to Home</button>
+    </footer>
+
+    <script>
+        function makeDonation() {
+            const amount = document.getElementById('donation-amount').value;
+
+            if (!amount || amount < 1) {
+                alert('Please enter a valid donation amount.');
+                return;
+            }
+
+            // Use the provided Flutterwave link and dynamically append the amount
+            const flutterwaveLink = `https://flutterwave.com/pay/glltnkixc5ex`;
+
+            // Update the payment link and show the payment section
+            document.getElementById('payment-link').setAttribute('href', flutterwaveLink);
+            document.getElementById('payment-section').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
